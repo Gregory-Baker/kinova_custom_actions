@@ -5,4 +5,4 @@ std_msgs/Empty goal
 bool success
 ---
 #feedback
-std_msgs/Empty feedback
+float32 wrench_force_z
