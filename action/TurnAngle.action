@@ -1,8 +1,8 @@
 #goal - 
-float32 angle
+float32 turn_angle
 ---
 #result
-bool success
+float32 angle_turned
 ---
 #feedback
 float32 angle_turned
