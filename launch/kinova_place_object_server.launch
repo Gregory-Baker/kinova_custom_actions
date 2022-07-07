@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+    
+    <node name="kinova_place_object_server" pkg="kinova_custom_actions" type="place_object_server.py"/>
+
+</launch>

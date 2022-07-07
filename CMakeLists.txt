@@ -70,13 +70,14 @@ add_action_files(
   DIRECTORY action
   FILES 
   PlaceObject.action
+  TurnAngle.action
 )
 
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
   DEPENDENCIES
   actionlib_msgs 
-  std_msgs 
+  std_msgs
   geometry_msgs
 )
 
@@ -112,7 +113,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES kinova_custom_actions
-  CATKIN_DEPENDS actionlib actionlib_msgs message_generation roscpp rospy std_msgs kortex_driver
+  CATKIN_DEPENDS actionlib actionlib_msgs message_generation roscpp rospy std_msgs kortex_driver nav_msgs
 #  DEPENDS system_lib
 )
 
@@ -168,6 +169,7 @@ include_directories(
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
   scripts/place_object_server.py
+  scripts/turn_robot_server.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
