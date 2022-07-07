@@ -54,8 +54,8 @@ class PlaceObjectAction(object):
         if (success):
             rospy.loginfo('%s: Succeeded' % self._action_name)
 
-        self._result.success = success
-        self._as.set_succeeded(result=self._result)
+            self._result.success = success
+            self._as.set_succeeded(result=self._result)
 
     
     def base_feedback_sub(self, data):
