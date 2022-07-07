@@ -72,6 +72,7 @@ add_action_files(
   FILES 
   PlaceObject.action
   TurnAngle.action
+  MoveDistance.action
 )
 
 ## Generate added messages and services with any dependencies listed here
@@ -171,6 +172,7 @@ include_directories(
 catkin_install_python(PROGRAMS
   scripts/place_object_server.py
   scripts/turn_robot_server.py
+  scripts/move_distance_server.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
