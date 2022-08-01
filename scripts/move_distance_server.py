@@ -7,8 +7,11 @@ from nav_msgs.msg import Odometry
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
 from geometry_msgs.msg import Twist, Vector3
 import math
+from sensor_msgs.msg import LaserScan
 
-
+STOP_DISTANCE = 0.2
+LIDAR_ERROR = 0.05
+SAFE_STOP_DISTANCE = STOP_DISTANCE + LIDAR_ERROR
 
 class MoveDistanceServer(object):
     _feedback = MoveDistanceFeedback()
@@ -16,7 +19,7 @@ class MoveDistanceServer(object):
 
     _move_speed = 0.3   # m/s
 
-    def __init__(self, name, cmd_vel_topic="/cmd_vel", odom_topic="/odom"):
+    def __init__(self, name, cmd_vel_topic="/cmd_vel", odom_topic="/odom", scan_topic="/scan_filtered"):
         self.previous_x = 0
         self.previous_y = 0
         self.distance_moved = 0.0
@@ -25,9 +28,21 @@ class MoveDistanceServer(object):
         self._action_name = name
         self._cmd_pub = rospy.Publisher(cmd_vel_topic, Twist, queue_size=10)
         self._odom_sub = rospy.Subscriber (odom_topic, Odometry, self.get_distance_moved)
+        self._scan_sub = rospy.Subscriber(scan_topic, LaserScan, self.scan_callback)
+
         self._as = actionlib.SimpleActionServer(self._action_name, MoveDistanceAction, execute_cb=self.execute_action_cb, auto_start = False)
         self._as.start()
         rospy.loginfo("Move robot forward/back action server started")
+
+    def scan_callback(self, data):
+        min_distance = min(data.ranges)
+
+        if min_distance < SAFE_STOP_DISTANCE:
+            self._as.preempt_request = True
+            self._safety_stop = True
+            rospy.loginfo('Stop!')
+        else:
+            self._safety_stop = False
 
     def execute_action_cb(self, goal):
         
