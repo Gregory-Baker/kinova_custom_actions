@@ -4,7 +4,6 @@ import rospy
 import actionlib
 from kinova_custom_actions.msg import MoveDistanceFeedback, MoveDistanceResult, MoveDistanceAction
 from nav_msgs.msg import Odometry
-from tf.transformations import euler_from_quaternion, quaternion_from_euler
 from geometry_msgs.msg import Twist, Vector3
 import math
 
@@ -32,7 +31,6 @@ class MoveDistanceServer(object):
     def execute_action_cb(self, goal):
         
         success = True
-        rate = rospy.Rate(50)
 
         self.first_run = True
         self.distance_moved = 0.0
@@ -54,7 +52,6 @@ class MoveDistanceServer(object):
             self._cmd_pub.publish(twist_command)
             self._feedback.distance_moved = self.distance_moved
             self._as.publish_feedback(self._feedback)
-            rate.sleep()
 
 
         rospy.loginfo("Distance moved: %f" % self.distance_moved)

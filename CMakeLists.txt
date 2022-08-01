@@ -71,6 +71,7 @@ add_action_files(
   DIRECTORY action
   FILES 
   PlaceObject.action
+  PickObjectFull.action
   TurnAngle.action
   MoveDistance.action
 )
