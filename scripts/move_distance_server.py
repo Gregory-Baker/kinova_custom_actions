@@ -8,13 +8,14 @@ from geometry_msgs.msg import Twist, Vector3
 import math
 from sensor_msgs.msg import LaserScan
 
-STOP_DISTANCE = 0.2
+STOP_DISTANCE = 0.25
 LIDAR_ERROR = 0.05
 SAFE_STOP_DISTANCE = STOP_DISTANCE + LIDAR_ERROR
 
 class MoveDistanceServer(object):
     _feedback = MoveDistanceFeedback()
     _result = MoveDistanceResult()
+    _goal_distance = 0
 
     _move_speed = 0.3   # m/s
 
@@ -34,17 +35,17 @@ class MoveDistanceServer(object):
         rospy.loginfo("Move robot forward/back action server started")
 
     def scan_callback(self, data):
-        min_distance = min(data.ranges)
+        if (self._as.is_active):
+            min_distance = min(data.ranges)
 
-        if min_distance < SAFE_STOP_DISTANCE:
-            self._as.preempt_request = True
-            self._safety_stop = True
-            rospy.loginfo('Stop!')
-        else:
-            self._safety_stop = False
+            if min_distance < SAFE_STOP_DISTANCE and self._goal_distance > 0:
+                self._as.preempt_request = True
+                self._safety_stop = True
+            else:
+                self._safety_stop = False
 
     def execute_action_cb(self, goal):
-        
+        self._goal_distance = goal.move_distance
         success = True
 
         self.first_run = True
@@ -72,6 +73,7 @@ class MoveDistanceServer(object):
         rospy.loginfo("Distance moved: %f" % self.distance_moved)
 
         self._cmd_pub.publish(Twist())  # Stop robot
+        self._goal_distance = 0
 
         if (success):
             rospy.loginfo('%s: Succeeded' % self._action_name)

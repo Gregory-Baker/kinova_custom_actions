@@ -60,7 +60,6 @@ class TurnRobotAction(object):
             self._feedback.angle_turned = angle_turned
             self._as.publish_feedback(self._feedback)
 
-
         rospy.loginfo("Angle turned: %f" % angle_turned)
 
         self._cmd_pub.publish(Twist())  # Stop robot

@@ -16,6 +16,7 @@ class PlaceObjectAction(object):
     _move_down_twist_msg = Twist(linear_z=-_move_speed)
     _move_up_twist_msg = Twist(linear_z=_move_speed)
     _stop_twist_msg = Twist()
+    _max_wrench_force_z = 20.0
 
     def __init__(self, place_action_name, pick_action_name, base_feedback_topic, cartesian_vel_pub_topic, stop_arm_topic, gripper_action_ns):
         self._place_action_name = place_action_name
@@ -47,7 +48,7 @@ class PlaceObjectAction(object):
 
         twist_command = TwistCommand(twist=self._move_down_twist_msg)
 
-        while(self._wrench_force_z < 10.0):
+        while(self._wrench_force_z < self._max_wrench_force_z):
             if self._as_place.is_preempt_requested():
                 rospy.loginfo('%s: Preempted' % self._place_action_name)
                 self._as_place.set_preempted()
@@ -103,7 +104,7 @@ class PlaceObjectAction(object):
 
         twist_command = TwistCommand(twist=self._move_down_twist_msg)
 
-        while(self._wrench_force_z < 10.0):
+        while(self._wrench_force_z < self._max_wrench_force_z):
             if self._as_pick.is_preempt_requested():
                 rospy.loginfo('%s: Preempted' % self._pick_action_name)
                 self._as_pick.set_preempted()
