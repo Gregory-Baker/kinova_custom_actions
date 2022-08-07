@@ -74,6 +74,7 @@ add_action_files(
   PickObjectFull.action
   TurnAngle.action
   MoveDistance.action
+  OdomNavigation.action
 )
 
 ## Generate added messages and services with any dependencies listed here
@@ -174,6 +175,7 @@ catkin_install_python(PROGRAMS
   scripts/place_object_server.py
   scripts/turn_robot_server.py
   scripts/move_distance_server.py
+  scripts/odom_navigation_server.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
