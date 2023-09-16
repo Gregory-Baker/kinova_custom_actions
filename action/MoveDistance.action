@@ -1,8 +1,0 @@
-#goal - 
-float32 move_distance
----
-#result
-float32 distance_moved
----
-#feedback
-float32 distance_moved

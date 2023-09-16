@@ -1,8 +1,0 @@
-#goal - 
-float32 turn_angle
----
-#result
-float32 angle_turned
----
-#feedback
-float32 angle_turned
